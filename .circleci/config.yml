@@ -119,7 +119,8 @@ jobs:
           command: |
             cd frontend
             npm install 
-            npm audit --audit-level-critical
+            npm audit fix --force --audit-level=critical
+            npm audit --audit-level=critical
       # npm audit fix
 
   scan-backend:
@@ -138,6 +139,7 @@ jobs:
           command: |
             cd backend
             npm install 
+            npm audit fix --force --audit-level=critical
             npm audit --audit-level-critical
       # npm audix fix
 
@@ -216,16 +218,29 @@ jobs:
   #     # Docker image here that supports AWS CLI
   #   steps:
   #     # Checkout code from git
+        # - checkout
+        # - install awscli
+        # - install nodejs
+        # - restore_cache:
+            #  keys: [frontend-build]
   #     - run:
   #         name: Install dependencies
   #         command: |
   #           # your code here
+              # cd frontend
+              # npm install
   #     - run:
   #         name: Get backend url
   #         command: |
   #           # your code here
+              # BACKEND_IP=$(aws ec2 describe-instances \
+              # --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              # --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              # --output text)
   #           export API_URL="http://${BACKEND_IP}:3030"
+              # echo "API_URL=http://${BACKEND_IP}:3030" >> frontend/.env
   #           echo "${API_URL}"
+              # cat frontend/ .env
   #     - run:
   #         name: Deploy frontend objects
   #         command: |
