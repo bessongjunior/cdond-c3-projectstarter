@@ -112,7 +112,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [build-frontend]
+          keys: [frontend-build]
       # Your job code here
         - run:
             name: Audit Analyse Frontend Vulnerabilities
@@ -131,7 +131,7 @@ jobs:
       - checkout
       # Restore from cache
       - restore_cache:
-          keys: [build-backend]
+          keys: [backend-backend]
       # Your job code here
       - run:
           name: Audit Analyse Backend Vulnerabilities
