@@ -114,12 +114,12 @@ jobs:
       - restore_cache:
           keys: [frontend-build]
       # Your job code here
-        - run:
-            name: Audit Analyse Frontend Vulnerabilities
-            command: |
-              cd frontend
-              npm install 
-              npm audit --audit-level-critical
+      - run:
+          name: Audit Analyse Frontend Vulnerabilities
+          command: |
+            cd frontend
+            npm install 
+            npm audit --audit-level-critical
       # npm audit fix
 
   scan-backend:
