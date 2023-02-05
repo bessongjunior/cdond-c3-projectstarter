@@ -80,7 +80,7 @@ jobs:
       # Your job code here
       - run:
           name: Testing Frontend
-          command:
+          command: |
             cd frontend
             npm install 
             npm run test
@@ -98,7 +98,7 @@ jobs:
       # Your job code here
       - run:
           name: Testing Backend
-          command:
+          command: |
             cd backend
             npm install 
             npm run test
