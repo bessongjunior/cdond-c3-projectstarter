@@ -115,7 +115,7 @@ jobs:
           keys: [build-frontend]
       # Your job code here
         - run:
-            name: Audit Analyse - Frontend Vulnerabilities
+            name: Audit Analyse Frontend Vulnerabilities
             command: |
               cd frontend
               npm install 
@@ -134,7 +134,7 @@ jobs:
           keys: [build-backend]
       # Your job code here
       - run:
-          name: Audit Analyse - Backend Vulnerabilities
+          name: Audit Analyse Backend Vulnerabilities
           command: |
             cd backend
             npm install 
