@@ -1,5 +1,10 @@
 version: 2.1
 
+orbs:
+  slack: circleci/slack@4.12.0
+  aws-cli: circleci/aws-cli@3.1.4
+  ansible_upload: orbss/ansible_upload@0.2.8
+
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -141,9 +146,18 @@ jobs:
             cd backend
             npm install 
             npm audit fix --audit-level=critical --force
-            npm audit fix --force --audit-level=critical
+            npm audit fix --force 
+            npm update path-parse --depth 3
             npm audit --audit-level-critical
       # npm audix fix
+      - save_cache:
+          paths: [backend/node_modules]
+          key: scan-backend
+      - slack/notify:
+          branch_pattern: master
+          channel: C04MYC3C1N2
+          event: fail
+          template: basic_fail_1
 
   # deploy-infrastructure:
   #   docker:
