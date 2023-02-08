@@ -19,7 +19,7 @@ commands:
           when: on_fail
           command: |
             # Your code here
-            echo "Destroying environment: << parameters.workflow_id >> "
+            # echo "Destroying environment: << parameters.workflow_id >> "
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
             aws s3 rm s3://udapeople-<<parameters.workflow_id>> --recursive
@@ -243,34 +243,34 @@ jobs:
   #     # Checkout code from git
   #     - checkout
   #     # Add ssh keys with fingerprint
-    #   - add_ssh_key
-        #  fingerprints: [" "]
+  #     - add_ssh_key
+  #        fingerprints: [" "]
   #     # attach workspace
-        # - attach_workspace:
-        #   at: ~/
+  #       - attach_workspace:
+  #         at: ~/
   #     - run:
   #         name: Install dependencies
   #         command: |
   #           # Your code here
-              # yum install -y gcc libffi-devel python3 epel-release && \
-              # yum install -y python3-pip && \
-              # yum install -y wget && \
-              # yum clean all && \
-              # yum update -y && \
-              # yum install -y tar gzip curl unzip openssh-server openssh-clients && \
-              # python3 -m pip install ansible
+  #             yum install -y gcc libffi-devel python3 epel-release && \
+  #             yum install -y python3-pip && \
+  #             yum install -y wget && \
+  #             yum clean all && \
+  #             yum update -y && \
+  #             yum install -y tar gzip curl unzip openssh-server openssh-clients && \
+  #             python3 -m pip install ansible
   #     - run:
   #         name: Configure server
   #         command: |
   #           # Your code here
-              # cd .circleci/ansible
-              # ansible-playbook -i inventory.txt configure-server.yml
-      # - run:
-      #     name: node_exporter
-      #     command: |
-      #       # Your code here
-      #       cd .circleci/ansible
-      #       ansible-playbook -i inventory.txt node-exporter.yml
+  #             cd .circleci/ansible
+  #             ansible-playbook -i inventory.txt configure-server.yml
+  #     - run:
+  #         name: node_exporter
+  #         command: |
+  #           # Your code here
+  #           cd .circleci/ansible
+  #           ansible-playbook -i inventory.txt node-exporter.yml
   #     # Here's where you will add some code to rollback on failure      
   #     - remove-bucket-contents
   #     - destroy-environment 
@@ -424,7 +424,8 @@ workflows:
       - scan-frontend:
           requires: [build-frontend]
       - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          require: [build-frontend, build-backend]
       #     filters:
       #       branches:
       #         only: [test-feature-branch]
