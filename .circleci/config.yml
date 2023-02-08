@@ -238,21 +238,42 @@ jobs:
   # configure-infrastructure:
   #   docker:
   #     # Docker image here that supports Ansible
+  #     - image: amazon/aws-cli
   #   steps:
   #     # Checkout code from git
+  #     - checkout
   #     # Add ssh keys with fingerprint
+    #   - add_ssh_key
+        #  fingerprints: [" "]
   #     # attach workspace
+        # - attach_workspace:
+        #   at: ~/
   #     - run:
   #         name: Install dependencies
   #         command: |
   #           # Your code here
-  #           exit 1
+              # yum install -y gcc libffi-devel python3 epel-release && \
+              # yum install -y python3-pip && \
+              # yum install -y wget && \
+              # yum clean all && \
+              # yum update -y && \
+              # yum install -y tar gzip curl unzip openssh-server openssh-clients && \
+              # python3 -m pip install ansible
   #     - run:
   #         name: Configure server
   #         command: |
   #           # Your code here
-  #           exit 1
+              # cd .circleci/ansible
+              # ansible-playbook -i inventory.txt configure-server.yml
+      # - run:
+      #     name: node_exporter
+      #     command: |
+      #       # Your code here
+      #       cd .circleci/ansible
+      #       ansible-playbook -i inventory.txt node-exporter.yml
   #     # Here's where you will add some code to rollback on failure      
+  #     - remove-bucket-contents
+  #     - destroy-environment 
 
   # run-migrations:
   #   docker:
