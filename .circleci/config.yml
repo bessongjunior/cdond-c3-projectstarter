@@ -202,8 +202,8 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags project=your-tag \
-              --stack-name udapeople-backend-${CIRCLECI_WORKFLOW_ID:0:7} \
-              --parameter-overrides ID=${CIRCLECI_WORKFLOW_ID:0:7}  
+              --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}  
               
       - run:
           name: Ensure front-end infrastructure exist
@@ -211,8 +211,8 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags project=your-tag \
-              --stack-name udapeople-frontend-${CIRCLECI_WORKFLOW_ID:0:7} \
-              --parameter-overrides ID=${CIRCLECI_WORKFLOW_ID:0:7}  
+              --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}  
               
       - run:
           name: Add back-end ip to ansible inventory
@@ -233,7 +233,7 @@ jobs:
           template: basic_fail_1
       # Here's where you will add some code to rollback on failure   
       - destroy-environment:
-          workflow_id: ${CIRCLECI_WORKFLOW_ID:0:7}
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
   # configure-infrastructure:
   #   docker:
@@ -278,13 +278,22 @@ jobs:
   # run-migrations:
   #   docker:
   #     # Docker image here that supports NodeJS
+  #     - image: circleci/node:13.8.0
   #   steps:
   #     # Checkout code from git
+  #     - checkout
+  #      # - aws-cli/setup
+  #    # - restore_cache:
+  #    #     keys: [scan-backend]
   #     - run:
   #         name: Run migrations
   #         command: |
   #           # Your code here
-  #           exit 1
+  #          cd backend
+  #          # Run and save the migration output
+  #          npm install --no-audit --no-fund
+  #          npm run migrations > migrations_dump.txt
+  #          # no_output_timeout: 5m
   #     - run:
   #         name: Send migration results to memstash
   #         command: |
