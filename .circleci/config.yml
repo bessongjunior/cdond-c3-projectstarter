@@ -256,7 +256,7 @@ jobs:
     docker:
       # Docker image here that supports Ansible
       # - image: amazon/aws-cli - donot support tar
-      - image: python3.7-alpine3.16
+      - image: python:3.7-alpine3.16
     steps:
       # Checkout code from git
       - checkout
