@@ -277,8 +277,7 @@ jobs:
             yum update -y && \
             yum install -y tar gzip curl unzip openssh-server openssh-clients && \
             python3 -m pip install ansible
-            # Your code here
-            # apk add --update --no-cache tar gzip ansible awscli -- tar not supported in this image: amozon/aws-cli
+# apk add --update --no-cache tar gzip ansible awscli -- tar not supported in this image: amozon/aws-cli
       - run:
           name: Configure server
           command: |
