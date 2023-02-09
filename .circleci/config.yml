@@ -271,13 +271,14 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
-            yum install -y gcc libffi-devel python3 epel-release && \
-            yum install -y python3-pip && \
-            yum install -y wget && \
-            yum clean all && \
-            yum update -y && \
-            yum install -y tar gzip curl unzip openssh-server openssh-clients && \
-            python3 -m pip install ansible
+            # yum install -y gcc libffi-devel python3 epel-release && \
+            # yum install -y python3-pip && \
+            # yum install -y wget && \
+            # yum clean all && \
+            # yum update -y && \
+            # yum install -y tar gzip curl unzip openssh-server openssh-clients && \
+            # python3 -m pip install ansible
+            
             # Your code here
             # apk add --update --no-cache tar gzip ansible awscli
       - run:
@@ -327,7 +328,6 @@ jobs:
             # Your code here
             if grep -q "has executed success" ~/project/backend/migrations_dump.txt
             then
-              # curl https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
               curl https://kvdb.io/Ddru8uAtzykhKNxseBqGBP/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
             fi
     # Here's where you will add some code to rollback on failure  
