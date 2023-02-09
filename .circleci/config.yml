@@ -255,8 +255,8 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      - image: amazon/aws-cli #- donot support tar
-      # - image: python:3.7-alpine3.16
+      # - image: amazon/aws-cli #- donot support tar
+      - image: python:3.7-alpine3.16
     steps:
       # Checkout code from git
       - checkout
@@ -271,13 +271,13 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
-            # yum install -y gcc libffi-devel python3 epel-release && \
-            # yum install -y python3-pip && \
-            # yum install -y wget && \
-            # yum clean all && \
-            # yum update -y && \
-            # yum install -y tar gzip curl unzip openssh-server openssh-clients && \
-            # python3 -m pip install ansible
+            yum install -y gcc libffi-devel python3 epel-release && \
+            yum install -y python3-pip && \
+            yum install -y wget && \
+            yum clean all && \
+            yum update -y && \
+            yum install -y tar gzip curl unzip openssh-server openssh-clients && \
+            python3 -m pip install ansible
             # Your code here
             # apk add --update --no-cache tar gzip ansible awscli
       - run:
@@ -350,14 +350,14 @@ jobs:
           command: |
             # your code here
             sudo apt update && \
-            sudo apt install -y tar gzip curl
-            apk add --update --no-cache tar gzip nodejs npm aws-cli curl
-      - run:
-          name: Install npm
-          command: |
-            # your code here
-            cd frontend
-            npm install
+            sudo apt install -y tar gzip curl nodejs npm aws-cli curl
+            # apk add --update --no-cache tar gzip nodejs npm aws-cli curl
+      # - run:
+      #     name: Install npm
+      #     command: |
+      #       # your code here
+      #       cd frontend
+      #       npm install
       - run:
           name: Get backend url
           command: |
@@ -375,59 +375,61 @@ jobs:
           command: |
             # your code here
             cd frontend
+            npm i
             pwd
             npm run build
+            # tar -czvf artifact="$(CIRCLE_WORKFLOW_ID:0:7)".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}  --recursive
       # Here's where you will add some code to rollback on failure      
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
                     
-  # deploy-backend:
-  #   docker:
-  #     # Docker image here that supports Ansible
-        # - image: amazon/aws-cli
-  #   steps:
-  #     # Checkout code from git
-        # - checkout
+  deploy-backend:
+    docker:
+      # Docker image here that supports Ansible
+      - image: amazon/aws-cli
+    steps:
+      # Checkout code from git
+      - checkout
 
-  #     # Add ssh keys with fingerprint
-        # - add_ssh_keys:
-        #     fingerprints:
-        #       - "53:d3:c5:8e:a4:88:96:07:1c:95:a6:62:76:8a:a8:f8"
-  #     # attach workspace
-        # - attach_workspace:
-        #     at: ~/
-  #     - run:
-  #         name: Install dependencies
-  #         command: |
-  #           # your code here
-              # apk add --update --no-cache tar gzip nodejs npm aws-cli ansible
-      # - run:
-      #     name: Package Backend
-      #     command: |
-      #       cd backend
-      #       npm i
-      #       npm run build
-      #       tar -czf artifact.tar.gz dist/* package*
-      #       cd ..
-      #       cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
-  #     - run:
-  #         name: Deploy backend
-  #         command: |
-  #           # your code here
-            #   cd .circleci/ansible
-            # BACKEND_IP=$(aws ec2 describe-instances \
-            # --filters "Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-            # --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            # --output text)
-            # export API_URL="http://${BACKEND_IP}:3030"
-            # echo $BACKEND_IP >> inventory.txt
-            # cat inventory.txt
-            # pwd
-            # ansible-playbook -i inventory.txt deploy-backend.yml
-  #     # Here's where you will add some code to rollback on failure  
-  #       - destroy-environment:
-  #         workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      # Add ssh keys with fingerprint
+      - add_ssh_keys:
+          fingerprints:
+            - "53:d3:c5:8e:a4:88:96:07:1c:95:a6:62:76:8a:a8:f8"
+      # attach workspace
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+            apk add --update --no-cache tar gzip nodejs npm aws-cli ansible
+      - run:
+          name: Package Backend
+          command: |
+            cd backend
+            npm i
+            npm run build
+            tar -czf artifact.tar.gz dist/* package*
+            cd ..
+            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
+      - run:
+          name: Deploy backend
+          command: |
+            # your code here
+              cd .circleci/ansible
+            BACKEND_IP=$(aws ec2 describe-instances \
+            --filters "Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --output text)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo $BACKEND_IP >> inventory.txt
+            cat inventory.txt
+            pwd
+            ansible-playbook -i inventory.txt deploy-backend.yml
+      # Here's where you will add some code to rollback on failure  
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
   # smoke-test:
   #   docker:
@@ -579,10 +581,10 @@ workflows:
           requires: [deploy-infrastructure]
       - run-migrations:
           requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #     requires: [run-migrations]
-      # - deploy-backend:
-      #     requires: [run-migrations]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
