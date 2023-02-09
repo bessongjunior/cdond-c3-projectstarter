@@ -255,7 +255,8 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      - image: amazon/aws-cli
+      # - image: amazon/aws-cli - donot support tar
+      - image: python3.7-alpine3.16
     steps:
       # Checkout code from git
       - checkout
@@ -270,14 +271,15 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
-            yum install -y gcc libffi-devel python3 epel-release && \
-            yum install -y python3-pip && \
-            yum install -y wget && \
-            yum clean all && \
-            yum update -y && \
-            yum install -y tar gzip curl unzip openssh-server openssh-clients && \
-            python3 -m pip install ansible
-# apk add --update --no-cache tar gzip ansible awscli -- tar not supported in this image: amozon/aws-cli
+            # yum install -y gcc libffi-devel python3 epel-release && \
+            # yum install -y python3-pip && \
+            # yum install -y wget && \
+            # yum clean all && \
+            # yum update -y && \
+            # yum install -y tar gzip curl unzip openssh-server openssh-clients && \
+            # python3 -m pip install ansible
+            # Your code here
+            apk add --update --no-cache tar gzip ansible awscli
       - run:
           name: Configure server
           command: |
