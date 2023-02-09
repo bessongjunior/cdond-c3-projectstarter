@@ -36,7 +36,7 @@ commands:
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             SUCCESS = 1  # comment this code line.
-            # SUCCESS=$(curl -k "https://kvdb.io/ /migration_<< parameters.workflow_id >>")
+            # SUCCESS=$(curl -k "https://kvdb.io/Ddru8uAtzykhKNxseBqGBP/migration_<< parameters.workflow_id >>")
             if(( $SUCCESS==1 )); 
             then
               #  cd ~/project/backend
@@ -255,8 +255,8 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      # - image: amazon/aws-cli - donot support tar
-      - image: python:3.7-alpine3.16
+      - image: amazon/aws-cli #- donot support tar
+      # - image: python:3.7-alpine3.16
     steps:
       # Checkout code from git
       - checkout
@@ -279,7 +279,7 @@ jobs:
             # yum install -y tar gzip curl unzip openssh-server openssh-clients && \
             # python3 -m pip install ansible
             # Your code here
-            apk add --update --no-cache tar gzip ansible awscli
+            # apk add --update --no-cache tar gzip ansible awscli
       - run:
           name: Configure server
           command: |
@@ -342,8 +342,6 @@ jobs:
   #   steps:
   #     # Checkout code from git
         # - checkout
-        # - install awscli
-        # - install nodejs
         # - restore_cache:
             #  keys: [frontend-build]
   #     - run:
@@ -352,6 +350,7 @@ jobs:
   #           # your code here
               # sudo apt update && \
               # sudo apt install -y tar gzip curl
+              # apk add --update --no-cache tar gzip nodejs npm aws-cli curl
       # - run:
       #     name: Install npm
       #     command: |
@@ -363,7 +362,7 @@ jobs:
   #         command: |
   #           # your code here
               # BACKEND_IP=$(aws ec2 describe-instances \
-              # --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              # --filters "Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               # --query 'Reservations[*].Instances[*].PublicIpAddress' \
               # --output text)
   #           export API_URL="http://${BACKEND_IP}:3030"
@@ -417,7 +416,7 @@ jobs:
   #           # your code here
             #   cd .circleci/ansible
             # BACKEND_IP=$(aws ec2 describe-instances \
-            # --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            # --filters "Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             # --query 'Reservations[*].Instances[*].PublicIpAddress' \
             # --output text)
             # export API_URL="http://${BACKEND_IP}:3030"
@@ -447,7 +446,7 @@ jobs:
   #         command: |
   #           # your code here
               # export BACKEND_IP=$(aws ec2 describe-instances \
-              # --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              # --filters "Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               # --query "Reservations[*].Instances[*].PublicDnsName" \
               # --output text)
               # echo "${API_URL}"
