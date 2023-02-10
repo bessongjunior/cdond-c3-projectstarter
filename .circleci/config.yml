@@ -373,6 +373,7 @@ jobs:
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
+
   # configure-infrastructure:
   #   docker:
   #     - image: python:3.11-rc-alpine
