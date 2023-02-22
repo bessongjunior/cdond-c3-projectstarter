@@ -413,6 +413,8 @@ jobs:
             ls -al
             npm install
             npm audit fix --force --audit-level=critical
+            npm audit fix --force 
+            npm audit fix --audit-level=critical
             npm run build
             cd ..
             pwd
