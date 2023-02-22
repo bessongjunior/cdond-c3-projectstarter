@@ -390,64 +390,32 @@ jobs:
             # your code here
             apk add --update --no-cache tar gzip nodejs npm aws-cli ansible
       - run:
-          name: Package and Deploy Backend
+          name: Package Backend
           command: |
-
-            pwd
+            # package backend
             cd backend
-
-            touch .env
-            echo ENVIRONMENT=production > ".env"
-            echo TYPEORM_CONNECTION=postgres >> ".env"
-            echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> ".env"
-            echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> ".env"
-            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> ".env"
-            echo NODE_ENV=production >> ".env"
-            echo TYPEORM_HOST=$TYPEORM_HOST >> ".env"
-            echo TYPEORM_PORT=$TYPEORM_PORT >> ".env"
-            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> ".env"
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> ".env"
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> ".env"
-            
-            pwd
-            ls -al
-            npm install
+            npm i
             npm run build
-            cd ..
-            pwd
-            ls -al
-            # Zip the directory
-            tar -C backend -czvf artifact.tar.gz .
-
-            cd .circleci/ansible
-
-            echo "Contents  of the inventory.txt file is -------"
-            cat inventory.txt
-            ansible-playbook -i inventory.txt deploy-backend.yml
-          # package backend
-            # cd backend
-            # npm i
-            # npm run build
-            # # cd ..
-            # # tar -C backend -czf artifact.tar.gz .
-            # tar -czf artifact.tar.gz dist/* package*
             # cd ..
-            # cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
-          # - run:
-          #     name: Deploy backend
-          #     command: |
-          #       # your code here
-          #       cd .circleci/ansible
-          #       BACKEND_IP=$(aws ec2 describe-instances \
-          #       --filters "Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-          #       --query 'Reservations[*].Instances[*].PublicIpAddress' \
-          #       --output text)
-          #       export API_URL="http://${BACKEND_IP}:3030"
-          #       echo $BACKEND_IP >> inventory.txt
-          #       cat inventory.txt
-          #       pwd
-          #       ansible-playbook -i inventory.txt deploy-backend.yml
-       # Here's where you will add some code to rollback on failure  
+            # tar -C backend -czf artifact.tar.gz .
+            tar -czf artifact.tar.gz dist/* package*
+            cd ..
+            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
+      - run:
+          name: Deploy backend
+          command: |
+              # your code here
+            cd .circleci/ansible
+            BACKEND_IP=$(aws ec2 describe-instances \
+            --filters "Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --output text)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo $BACKEND_IP >> inventory.txt
+            cat inventory.txt
+            pwd
+            ansible-playbook -i inventory.txt deploy-backend.yml
+      #  Here's where you will add some code to rollback on failure  
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations:
