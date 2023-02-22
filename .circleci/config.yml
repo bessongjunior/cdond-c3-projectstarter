@@ -412,9 +412,9 @@ jobs:
             pwd
             ls -al
             npm install
-            npm audit fix --force --audit-level=critical
-            npm audit fix --force 
-            npm audit fix --audit-level=critical
+            # npm audit fix --force --audit-level=critical
+            # npm audit fix --force 
+            # npm audit fix --audit-level=critical
             npm run build
             cd ..
             pwd
@@ -426,10 +426,10 @@ jobs:
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
 
-      # - destroy-environment:
-      #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      # - revert-migrations:
-      #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
     
   smoke-test:
     docker:
