@@ -546,8 +546,7 @@ jobs:
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}" || true
             else
               echo "Stack is the latest"
-            fi
-     
+            fi  
 
 workflows:
   default:
