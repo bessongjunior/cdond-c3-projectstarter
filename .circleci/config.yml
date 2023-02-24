@@ -520,8 +520,7 @@ jobs:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - remove-bucket-contents:  
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+
 
   cloudfront-update:
     docker:
@@ -564,8 +563,7 @@ jobs:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - remove-bucket-contents:  
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+
 
   cleanup:
     docker:
