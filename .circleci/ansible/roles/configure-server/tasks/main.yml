@@ -1,31 +1,39 @@
 ---
-- name: "update local apt repo."
-  become: true
-  apt:
-    update_cache: yes
+ - name: "update apt packages."
+   become: true
+   apt:
+     update_cache: yes
+     cache_valid_time: 86400
 
-- name: "upgrade apt packages"
-  become: true
-  apt:
-    upgrade: yes
+ - name: "upgrade packages"
+   become: true
+   apt:
+     upgrade: yes
 
+ - name: Install the gpg key for nodejs LTS
+   apt_key:
+     url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+     state: present
+    
+ - name: Install the nodejs LTS repos
+   become: yes
+   apt_repository:
+     repo: "deb https://deb.nodesource.com/node_{{ NODEJS_VERSION }}.x {{ ansible_distribution_release }} main"
+     state: present
+     update_cache: yes
 
-- name: "remove stale dependencies"
-  become: true
-  apt:
-    autoremove: yes
+ - name: Install the nodejs
+   become: yes
+   apt:
+     name: nodejs
+     state: present
 
-- name: "install dependencies [nodejs and npm]."
-  become: true
-  apt:
-    name: ["nodejs", "npm"]
-    state: latest
-    update_cache: yes
+ - name: "install pm2"
+   become: yes
+   npm:
+     name: pm2
+     global: yes
+     production: yes
+     state: present
 
-- name: "install pm2"
-  become: true
-  npm:
-    name: pm2
-    global: yes
-    production: yes
-    state: present
+# VS Code Extension Version: 1.5.0
