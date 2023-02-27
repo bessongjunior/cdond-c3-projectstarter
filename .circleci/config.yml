@@ -398,8 +398,6 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      # - restore_cache:
-      #     keys: [backend-build]
       # Add ssh keys with fingerprint
       - add_ssh_keys:
           fingerprints:
@@ -411,7 +409,8 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            apk add --update --no-cache tar gzip nodejs npm aws-cli ansible
+            apk add --update --no-cache tar gzip nodejs npm aws-cli ansible curl
+            # apk add --update --no-cache ansible tar gzip nodejs npm curl aws-cli
 
       - run:
           name: Deploy backend
@@ -434,9 +433,6 @@ jobs:
             pwd
             ls -al
             npm install
-            # npm audit fix --force --audit-level=critical
-            # npm audit fix --force 
-            # npm audit fix --audit-level=critical
             npm run build
             cd ..
             pwd
@@ -546,7 +542,7 @@ jobs:
       # - remove-bucket-contents:  
       #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
-      
+       
 # export BACKEND_IP=$(aws ec2 describe-instances \
 # --query "Reservations[*].Instances[*].[PublicIpAddress]" \
 # --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
