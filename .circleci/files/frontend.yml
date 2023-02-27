@@ -32,10 +32,3 @@ Outputs:
   WebsiteURL:
     Value: !GetAtt WebsiteBucket.WebsiteURL
     Description: URL for website hosted on S3
-  ID:
-    Value: !Sub ${ID}
-    Description: Unique identifier for stack
-    # Export:
-    #   Name: ID
-
-# VS Code Extension Version: 1.5.0
