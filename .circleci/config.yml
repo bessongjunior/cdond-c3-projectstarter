@@ -494,25 +494,47 @@ jobs:
       - run:
           name: Get backend url and Backend smoke test.
           command: |
+            # export BACKEND_IP=$(aws ec2 describe-instances \
+            # --query "Reservations[*].Instances[*].[PublicIpAddress]" \
+            # --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            # --output text)
+            # echo ${BACKEND_IP}
+            
+            # export BACKEND=$(echo $BACKEND_IP | grep -o '[^ ]*$')
+            
+            # echo $BACKEND
+            # export API_URL="http://${BACKEND}:3030"
+            # echo "API_URL=${API_URL}"
+            # echo "Sleeping for 1 minute"
+            # sleep 60
+            # if curl -s "${API_URL}/api/status" | grep "ok"
+            # then
+            #   return 0
+            # else
+            #   return 1
+            # fi
             export BACKEND_IP=$(aws ec2 describe-instances \
             --query "Reservations[*].Instances[*].[PublicIpAddress]" \
             --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --output text)
             echo ${BACKEND_IP}
-            
-            export BACKEND=$(echo $BACKEND_IP | grep -o '[^ ]*$')
-            
-            echo $BACKEND
-            export API_URL="http://${BACKEND}:3030"
+
+            # export BACKEND=$(echo $BACKEND_IP | grep -o '[^ ]*$')
+
+            # echo $BACKEND
+            export API_URL="http://${BACKEND_API}:3030"
             echo "API_URL=${API_URL}"
-            echo "Sleeping for 1 minute"
-            sleep 60
+            # echo "Sleeping for 2 minute"
+            # sleep 120
             if curl -s "${API_URL}/api/status" | grep "ok"
             then
               return 0
             else
               return 1
             fi
+
+
+
       - run:
           name: Frontend smoke test.
           command: |
@@ -538,30 +560,7 @@ jobs:
 #       - destroy-environment:
 #           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 #       - revert-migrations:
-#           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      # - remove-bucket-contents:  
-      #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-
-       
-# export BACKEND_IP=$(aws ec2 describe-instances \
-# --query "Reservations[*].Instances[*].[PublicIpAddress]" \
-# --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-# --output text)
-# echo ${BACKEND_IP}
-
-# export BACKEND=$(echo $BACKEND_IP | grep -o '[^ ]*$')
-
-# echo $BACKEND
-# export API_URL="http://${BACKEND}:3030"
-# echo "API_URL=${API_URL}"
-# echo "Sleeping for 1 minute"
-# sleep 60
-# if curl -v "${API_URL}/api/status" | grep "ok"
-# then
-#   return 0
-# else
-#   return 1
-# fi
+#           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}  
 
   cloudfront-update:
     docker:
