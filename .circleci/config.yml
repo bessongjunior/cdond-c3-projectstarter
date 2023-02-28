@@ -1,7 +1,7 @@
 version: 2.1
 # aws cloudformation deploy --template-file .circleci/files/cloudfront.yml --stack-name InitialStack --parameter-overrides WorkflowID=kelechi1
 orbs:
-  slack: circleci/slack@4.1
+  slack: circleci/slack@4.12.0
 
 parameters:
   workflow_id:
@@ -114,7 +114,6 @@ jobs:
             cd backend
             npm install
             npm run test
-
   scan-frontend:
     docker:
       # Docker image here
@@ -127,12 +126,19 @@ jobs:
           keys: [frontend-build]
       # Your job code here
       - run:
-          name: Analyse frontend
+          name: Audit Analyse Frontend Vulnerabilities
           command: |
             cd frontend
-            npm install
-            npm audit fix --audit-level=critical --force
+            npm install 
+            npm audit fix --audit-level=critical
+            npm audit fix --force --audit-level=critical
             npm audit --audit-level=critical
+      # npm audit fix
+      - slack/notify:
+          branch_pattern: master
+          channel: C04CPS646NP
+          event: fail
+          template: basic_fail_1
 
   scan-backend:
     docker:
@@ -209,7 +215,7 @@ jobs:
       # Add ssh keys with fingerprint
       - add_ssh_keys:
           fingerprints:
-            - 'ab:52:25:68:df:4c:3a:d5:48:18:55:d8:f9:3b:df:de'
+            - 'ea:09:c6:0d:b5:e0:e9:f2:43:ca:33:46:66:bc:41:53'
       - run:
           name: Install dependencies
           command: |
@@ -274,7 +280,7 @@ jobs:
           command: |
             if grep -q "migrations" ~/project/backend/migrations_dump.txt
             then
-              curl --insecure https://kvdb.io/ViWzkdySLpmD9TMMzU5Fzq/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
+              curl --insecure https://kvdb.io/Ddru8uAtzykhKNxseBqGBP/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
             fi
       # Here's where you will add some code to rollback on failure
       - destroy-environment:
@@ -331,7 +337,7 @@ jobs:
       # Add ssh keys with fingerprint
       - add_ssh_keys:
           fingerprints:
-            - 'ab:52:25:68:df:4c:3a:d5:48:18:55:d8:f9:3b:df:de'
+            - 'ea:09:c6:0d:b5:e0:e9:f2:43:ca:33:46:66:bc:41:53'
       # attach workspace
       - attach_workspace:
           at: ~/
@@ -483,7 +489,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - 'ab:52:25:68:df:4c:3a:d5:48:18:55:d8:f9:3b:df:de'
+            - 'ea:09:c6:0d:b5:e0:e9:f2:43:ca:33:46:66:bc:41:53'
       - run:
           name: Install deps
           command: |
