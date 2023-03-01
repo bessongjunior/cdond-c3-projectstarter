@@ -479,7 +479,7 @@ jobs:
             echo "Sleeping for 1 minute"
             sleep 60
 
-            if curl -v "${API_URL}/api/status" | grep "ok"
+            if curl "${API_URL}/api/status" | grep "ok"
             then
               return 0
             else
@@ -500,10 +500,10 @@ jobs:
               return 1
             fi
       
-      - destroy-environment:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - revert-migrations:
-            workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}  
+      # - destroy-environment:
+      #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      # - revert-migrations:
+      #       workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}  
 
   cloudfront-update:
     docker:
