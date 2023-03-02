@@ -1,0 +1,7 @@
+1 - github url: 
+
+2 - public URL for your S3 Bucket: 
+
+3 - front-end application in CloudFront:
+
+4 - The backend endpoint: https://<Public-IP>:3030/api/status 
