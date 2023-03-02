@@ -55,8 +55,6 @@ commands:
              # your code here
              aws s3 rm s3://udapeople-<< parameters.bucket_name >> --recursive
 
-  \  
-
 
 jobs:
   build-frontend:
