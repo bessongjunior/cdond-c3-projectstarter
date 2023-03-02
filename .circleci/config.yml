@@ -196,8 +196,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update --no-cache ansible tar gzip aws-cli openssh
-            # pip install awscli
+            apk add --update --no-cache ansible tar gzip openssh
+            pip install awscli
       - run:
           name: Configure server
           working_directory: .circleci/ansible
@@ -214,7 +214,8 @@ jobs:
             echo TYPEORM_PORT=$TYPEORM_PORT >> backend/.env
             echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> backend/.env
             cat backend/.env
-
+            pwd
+            ls -al
             cat inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
 
