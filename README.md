@@ -1,4 +1,4 @@
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/bessongjunior/cdond-c3-projectstarter/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/bessongjunior/cdond-c3-projectstarter/tree/master)
+[![CircleCI](https://dl.circleci.com/status-badge/img/null/bessongjunior/cdond-c3-projectstarter/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/null/bessongjunior/cdond-c3-projectstarter/tree/master)
 
 We are archiving this repository because we do not want learners to push personal development to the current repository. If you have any issues or suggestions to make, feel free to:
 - Utilize the https://knowledge.udacity.com/ forum to seek help on content-specific issues.
