@@ -1,7 +1,9 @@
-1 - github url: 
+1 - github url: https://github.com/bessongjunior/cdond-c3-projectstarter
 
 2 - public URL for your S3 Bucket: 
 
-3 - front-end application in CloudFront:
+3 - front-end application in CloudFront: d2qlf2dscs45to.cloudfront.net
 
-4 - The backend endpoint: https://<Public-IP>:3030/api/status 
+4 - The backend endpoint: https://54.211.243.96:3030/api/status 
+
+5 - Prometheus Server: 
