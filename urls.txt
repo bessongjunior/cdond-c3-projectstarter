@@ -1,8 +1,11 @@
 1 - github url: https://github.com/bessongjunior/cdond-c3-projectstarter
 
-2 - public URL for your S3 Bucket: http://udapeople-d437adf.s3-website-us-east-1.amazonaws.com
+2 - public URL for your S3 Bucket: 
 
-3 - front-end application in CloudFront: d2qlf2dscs45to.cloudfront.net
+old-2-http://udapeople-d437adf.s3-website-us-east-1.amazonaws.com
+
+3 - front-end application in CloudFront: 
+ old-3-d2qlf2dscs45to.cloudfront.net
 
 4 - The backend endpoint: http://44.204.56.24:3030/api/status
 
